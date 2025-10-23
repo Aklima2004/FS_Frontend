@@ -1,0 +1,166 @@
+/* База — красим ВСЮ страницу через html[data-theme] */
+:root {
+  --page-bg: #ffffff;
+  --page-text: #1f2328;
+
+  --card-bg: #f7f9fc;
+  --card-border: #e6ebf2;
+  --muted: #667085;
+
+  --btn-bg: #ffffff;
+  --btn-border: #d0d7e2;
+  --btn-hover: #eef2f8;
+
+  --primary: #2f6feb; /* синий для кнопок */
+  --primary-contrast: #ffffff;
+  --shadow: 0 10px 25px rgba(17, 24, 39, 0.08);
+
+  --btn-fg: #1f2328; 
+}
+
+html[data-theme="dark"] {
+  --page-bg: #0f1216;
+  --page-text: #f3f4f6;
+
+  --card-bg: #161a20;
+  --card-border: #0e2242;
+  --muted: #a1a9b4;
+
+  --btn-bg: #101419;
+  --btn-border: #2a2f37;
+  --btn-hover: #1a1f27;
+
+  --primary: #4f7fff;
+  --primary-contrast: #0e1220;
+  --shadow: 0 10px 28px rgba(0, 0, 0, 0.35);
+  
+  --btn-fg: #9ae2e7;
+}
+
+/* фон и текст у всей страницы */
+html,
+body {
+  background: var(--page-bg);
+  color: var(--page-text);
+  min-height: 100%;
+}
+
+/* Контейнер: стабильная ширина 1320px + боковые паддинги, по центру */
+.container {
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: 24px 32px 56px;
+}
+
+/* Хедер на всю ту же ширину */
+.app-header {
+  margin: 8px 0 24px;
+}
+.app-title {
+  font-size: 48px;
+  line-height: 1.2;
+  font-weight: 800;
+  letter-spacing: 0.2px;
+}
+
+/* Карточки-секции: всегда 100% ширины контейнера (не зависят от подсказки) */
+.section {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 14px;
+  padding: 20px 24px;
+  box-shadow: var(--shadow);
+  width: 100%;
+  margin: 18px 0;
+}
+
+/* Горизонтальные «инфо» блоки */
+.notice {
+  background: color-mix(in srgb, var(--primary) 12%, var(--page-bg));
+  border: 1px solid color-mix(in srgb, var(--primary) 30%, var(--card-border));
+  padding: 16px 18px;
+  border-radius: 12px;
+}
+
+/* Кнопки/инпуты — единый стиль */
+.btn {
+  background: var(--btn-bg);
+  border: 1px solid var(--btn-border);
+  border-radius: 12px;
+  padding: 10px 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.15s ease;
+  color: var(--btn-fg);
+}
+.btn:hover { background: var(--btn-hover); }
+.btn:disabled { opacity: .6; cursor: not-allowed; }
+
+.btn-primary {
+  background: var(--primary);
+  color: var(--primary-contrast);
+  border-color: color-mix(in srgb, var(--primary) 65%, var(--btn-border));
+}
+.btn-primary:hover {
+  filter: brightness(1.05);
+}
+
+.input {
+  width: 100%;
+  background: var(--btn-bg);
+  border: 1px solid var(--btn-border);
+  border-radius: 12px;
+  padding: 10px 12px;
+  outline: none;
+  transition: 0.12s ease;
+  color: var(--page-text);
+}
+.input:focus {
+  border-color: color-mix(in srgb, var(--primary) 55%, var(--btn-border));
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 25%, transparent);
+}
+
+/* Специальный класс для кнопки «Фокус на поле» */
+.btn.focus-btn {
+  min-width: 168px;    /* подгони ширину, при необходимости */
+  white-space: nowrap; /* запрет переноса строки */
+}
+
+/* Списки задач */
+.todo-list {
+  list-style: none;
+  padding: 0;
+  margin: 10px 0 0;
+  display: grid;
+  gap: 10px;
+}
+.todo-item {
+  background: var(--page-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 12px;
+  padding: 12px 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.todo-title {
+  flex: 1;
+}
+
+/* Низ страницы */
+.app-footer {
+  border-top: 1px solid var(--card-border);
+  margin-top: 28px;
+  padding-top: 16px;
+  color: var(--muted);
+}
+
+/* Вспомогательные лэйауты */
+.row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.space-between { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.muted { color: var(--muted); }
+
+/* На узких экранах оставляем хороший воздух */
+@media (max-width: 640px) {
+  .app-title { font-size: 36px; }
+}
