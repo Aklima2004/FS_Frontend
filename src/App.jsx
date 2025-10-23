@@ -80,6 +80,7 @@ function AppContent() {
   );
 }
 
+// something new
 export default function App() {
   return (
     <ThemeProvider>
