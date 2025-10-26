@@ -1,0 +1,136 @@
+/* src/index.css */
+
+/* ===== БАЗА / ТИПОГРАФИКА ===== */
+:root{
+  --bg: #f7f9fc;
+  --text: #1f2328;
+  --muted: #6b7280;
+
+  --card-bg: #ffffff;
+  --card-border: #e5e7eb;
+  --shadow: 0 10px 25px rgba(17, 24, 39, .07);
+
+  --primary: #2563eb;
+  --primary-contrast: #fff;
+
+  --input-bg: #fff;
+  --input-border: #d1d5db;
+  --input-focus: #9bb8ff;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root{
+    --bg: #0f1216;
+    --text: #f3f4f6;
+    --muted: #9aa3af;
+
+    --card-bg: #161a20;
+    --card-border: #232a36;
+    --shadow: 0 10px 30px rgba(0,0,0,.35);
+
+    --input-bg: #101419;
+    --input-border: #2a2f37;
+    --input-focus: #355dff66;
+  }
+}
+
+*{ box-sizing: border-box; }
+html, body, #root { height: 100%; }
+body{
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font: 16px/1.6 system-ui, -apple-system, Segoe UI, Roboto, Inter, Arial, "Apple Color Emoji","Segoe UI Emoji";
+}
+
+/* ===== КОНТЕЙНЕР И ШАПКИ ===== */
+.container{
+  max-width: 880px;           /* ← текст “съедет” правее и будет читаться легче */
+  margin: 24px auto 100px;     /* центрируем и даём отступы */
+  padding: 0 24px;            /* боковые поля */
+}
+h1{
+  font-size: 42px;
+  line-height: 1.2;
+  margin: 8px 0 22px;
+  font-weight: 800;
+  letter-spacing: .2px;
+}
+h2, h3{
+  line-height: 1.3;
+  margin: 0 0 10px;
+}
+
+/* ===== КАРТОЧКИ-СЕКЦИИ ===== */
+.card{
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 14px;
+  box-shadow: var(--shadow);
+  padding: 20px 22px;
+  margin: 16px 0;
+}
+
+/* ===== ФОРМЫ ===== */
+.form{
+  display: grid;
+  gap: 10px;
+  max-width: 420px;
+}
+input, button{
+  font: inherit;
+}
+input[type="text"],
+input[type="number"]{
+  width: 100%;
+  background: var(--input-bg);
+  border: 1px solid var(--input-border);
+  border-radius: 12px;
+  padding: 10px 12px;
+  color: var(--text);
+  outline: none;
+  transition: border-color .15s ease, box-shadow .15s ease;
+}
+input:focus{
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px var(--input-focus);
+}
+
+/* ===== КНОПКИ ===== */
+.btn{
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  color: var(--text);
+  border-radius: 12px;
+  padding: 10px 14px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: .15s ease;
+}
+.btn:hover{ filter: brightness(1.02); }
+.btn-primary{
+  background: var(--primary);
+  color: var(--primary-contrast);
+  border-color: color-mix(in srgb, var(--primary) 60%, var(--card-border));
+}
+.btn-primary:hover{ filter: brightness(1.05); }
+
+/* ===== МЕЛОЧИ ===== */
+.hr{
+  height: 1px;
+  background: var(--card-border);
+  border: none;
+  margin: 16px 0;
+}
+.muted{ color: var(--muted); }
+.row{ display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+
+/* ===== ФУТЕР ===== */
+.footer {
+  text-align: center;
+  margin-top: 60px;      /* расстояние от последней карточки */
+  padding: 0px 0 30px;  /* нижний отступ страницы */
+  color: var(--muted);
+  font-size: 14px;
+}
+
