@@ -1,42 +1,132 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+:root {
+  /* Сакура-палитра + ночной фон */
+  --page-bg: radial-gradient(1200px 800px at 80% 0%, #2a2d3a 0%, #0c0d12 60%);
+  --page-fg: #f4f6fb;
+
+  --card-bg: rgba(20, 22, 31, 0.75);
+  --card-border: #2b2f44;
+  --muted: #aab1c4;
+
+  --accent: #ff6fae;   /* розовый */
+  --accent-2: #8b7bff; /* фиолетовый */
+  --accent-3: #64b5f6; /* синий */
+
+  --error: #ef5350;
+  --shadow: 0 18px 42px rgba(0, 0, 0, 0.45);
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+* { box-sizing: border-box; }
+
+html, body, #root {
+  height: 100%;
+  margin: 0;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+body {
+  color: var(--page-fg);
+  background: var(--page-bg);
+  background-attachment: fixed;
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue",
+    Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+.page {
+  min-height: 100%;
+  display: grid;
+  place-items: center;
+  padding: 28px;
 }
 
 .card {
-  padding: 2em;
+  width: 100%;
+  max-width: 640px;
+  background:
+    linear-gradient(var(--card-bg), var(--card-bg)) padding-box,
+    /* рамка-градиент */
+    linear-gradient(135deg, #ff77aa, #b36bff 35%, #5869ff) border-box;
+  border: 1px solid transparent;
+  border-radius: 18px;
+  box-shadow: var(--shadow);
+  padding: 18px 20px;
+  backdrop-filter: blur(6px);
 }
 
-.read-the-docs {
-  color: #888;
+.card.error {
+  border-color: color-mix(in srgb, var(--error) 60%, var(--card-border));
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-bottom: 1px solid var(--card-border);
+  margin-bottom: 14px;
+  padding-bottom: 10px;
+}
+
+.card-header h2 {
+  margin: 0;
+  font-weight: 900;
+  letter-spacing: 0.2px;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2), var(--accent-3));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.chip {
+  border: 1px solid color-mix(in srgb, var(--accent-2) 60%, #fff);
+  color: #e9e5ff;
+  padding: 4px 8px;
+  border-radius: 999px;
+  font-size: 12px;
+}
+
+.weather-row {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 8px 2px 12px;
+}
+
+.weather-icon {
+  border-radius: 14px;
+  background: linear-gradient(135deg, rgba(255,111,174,0.18), rgba(139,123,255,0.18));
+  padding: 8px;
+}
+
+.weather-info .temp {
+  font-size: 56px;
+  line-height: 1;
+  font-weight: 900;
+  letter-spacing: 0.5px;
+}
+
+.weather-info .desc {
+  margin-top: 6px;
+  font-size: 16px;
+  color: var(--muted);
+  text-transform: capitalize;
+}
+
+.card-footer {
+  border-top: 1px solid var(--card-border);
+  margin-top: 12px;
+  padding-top: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.muted { color: var(--muted); }
+
+.error-text {
+  color: var(--error);
+  margin: 12px 0 4px;
+}
+
+/* немножко воздуха снизу на маленьких экранах */
+@media (max-width: 420px) {
+  .page { padding: 20px 16px 28px; }
+  .weather-info .temp { font-size: 48px; }
 }
