@@ -1,42 +1,186 @@
+/* --- Палитра и базовые переменные --- */
+:root {
+  --bg: #0f1117;
+  --fg: #e9edf1;
+  --muted: #a7b0be;
+
+  --card: #151826;
+  --border: #262b3a;
+
+  --accent: #6ea8fe;   /* синий */
+  --accent-2: #a78bfa; /* фиолетовый */
+  --accent-3: #64b5f6; /* голубой */
+
+  --danger: #ef5350;
+  --shadow: 0 16px 42px rgba(0, 0, 0, 0.35);
+}
+
+* { box-sizing: border-box; }
+
+/* ВАЖНО: фон задаём и html, и body → не будет «белого хвоста» */
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  background:
+    radial-gradient(1200px 800px at 80% 0%, #1a1f2e 0%, var(--bg) 60%);
+  background-attachment: fixed;
+  color: var(--fg);
+}
+
+/* Корень Vite без ограничений ширины */
 #root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+  max-width: none;
+  padding: 0;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+/* --- Центрирование карточки --- */
+/* По умолчанию карточка ровно по центру окна */
+.page {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;      /* горизонталь + вертикаль */
+  padding: 6vh 24px;        /* немного воздуха */
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+/* Когда появились результаты (или идёт загрузка) — поднимаем карточку вверх,
+   но она остаётся ЦЕНТРИРОВАНА по горизонтали */
+.page.page--top {
+  align-content: start;
+  padding-top: 4vh;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
-}
-
+/* --- Карточка --- */
+/* Сделал её шире: max-width 1160px (можешь увеличить до 1280px) */
 .card {
-  padding: 2em;
+  width: 100%;
+  max-width: 1300px;  /* ⬅️ ширина карточки/таблицы */
+  margin: 0 auto;     /* на всякий случай центрирование */
+  margin-left: 100px;
+  background:
+    linear-gradient(var(--card), var(--card)) padding-box,
+    linear-gradient(135deg, var(--accent), var(--accent-2) 40%, var(--accent-3)) border-box;
+  border: 1px solid transparent;
+  border-radius: 16px;
+  box-shadow: var(--shadow);
+  padding: 18px 20px;
 }
 
-.read-the-docs {
-  color: #888;
+/* --- Шапка карточки --- */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+}
+
+.title {
+  margin: 0;
+  font-weight: 900;
+  letter-spacing: 0.2px;
+}
+
+/* --- Вторичный текст --- */
+.muted { color: var(--muted); }
+
+/* --- Форма поиска --- */
+.form {
+  margin-top: 14px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.input {
+  flex: 1 1 420px;
+  background: #0f1320;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px 14px; /* немного крупнее */
+  font-size: 16px;
+  color: var(--fg);
+  outline: none;
+  transition: box-shadow .15s ease, border-color .15s ease;
+}
+.input::placeholder { color: #7d8696; }
+.input:focus {
+  border-color: #395ea7;
+  box-shadow: 0 0 0 3px rgba(57, 94, 167, 0.25);
+}
+
+.btn {
+  background: var(--accent);
+  color: #0c111b;
+  border: none;
+  border-radius: 12px;
+  padding: 12px 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform .06s ease, filter .15s ease;
+}
+.btn:hover { filter: brightness(1.05); }
+.btn:active { transform: translateY(1px); }
+.btn:disabled { opacity: .7; cursor: not-allowed; }
+
+/* --- Статусы --- */
+.status { margin-top: 10px; }
+.error {
+  margin-top: 12px;
+  color: var(--danger);
+  font-weight: 600;
+}
+.empty {
+  margin-top: 12px;
+  color: var(--muted);
+}
+
+/* --- Таблица результатов --- */
+.table-wrap {
+  margin-top: 16px;
+  overflow: auto;                 /* горизонтальный скролл только внутри таблицы */
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+
+/* Чтобы таблица занимала всю ширину карточки */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 760px;   /* можно поднять/опустить порог; не даём колонкам схлопнуться */
+}
+
+thead th {
+  text-align: left;
+  padding: 12px;
+  border-bottom: 1px solid var(--border);
+  font-weight: 800;
+  color: #cfd6e4;
+  background: #101425;
+}
+
+tbody td {
+  padding: 12px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+
+/* --- Ячейка с репозиторием --- */
+.repo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.avatar {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid var(--border);
+}
+
+/* --- Адаптив --- */
+@media (max-width: 520px) {
+  .title { font-size: 20px; }
+  .input { font-size: 15px; }
 }
