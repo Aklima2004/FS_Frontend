@@ -1,88 +1,4 @@
-/* --- Палитра и базовые переменные --- */
-:root {
-  --bg: #0f1117;
-  --fg: #e9edf1;
-  --muted: #a7b0be;
-
-  --card: #151826;
-  --border: #262b3a;
-
-  --accent: #6ea8fe;   /* синий */
-  --accent-2: #a78bfa; /* фиолетовый */
-  --accent-3: #64b5f6; /* голубой */
-
-  --danger: #ef5350;
-  --shadow: 0 16px 42px rgba(0, 0, 0, 0.35);
-}
-
-* { box-sizing: border-box; }
-
-/* ВАЖНО: фон задаём и html, и body → не будет «белого хвоста» */
-html, body, #root {
-  height: 100%;
-  margin: 0;
-  background:
-    radial-gradient(1200px 800px at 80% 0%, #1a1f2e 0%, var(--bg) 60%);
-  background-attachment: fixed;
-  color: var(--fg);
-}
-
-/* Корень Vite без ограничений ширины */
-#root {
-  max-width: none;
-  padding: 0;
-}
-
-/* --- Центрирование карточки --- */
-/* По умолчанию карточка ровно по центру окна */
-.page {
-  min-height: 100vh;
-  display: grid;
-  place-items: center;      /* горизонталь + вертикаль */
-  padding: 6vh 24px;        /* немного воздуха */
-}
-
-/* Когда появились результаты (или идёт загрузка) — поднимаем карточку вверх,
-   но она остаётся ЦЕНТРИРОВАНА по горизонтали */
-.page.page--top {
-  align-content: start;
-  padding-top: 4vh;
-}
-
-/* --- Карточка --- */
-/* Сделал её шире: max-width 1160px (можешь увеличить до 1280px) */
-.card {
-  width: 100%;
-  max-width: 1300px;  /* ⬅️ ширина карточки/таблицы */
-  margin: 0 auto;     /* на всякий случай центрирование */
-  margin-left: 100px;
-  background:
-    linear-gradient(var(--card), var(--card)) padding-box,
-    linear-gradient(135deg, var(--accent), var(--accent-2) 40%, var(--accent-3)) border-box;
-  border: 1px solid transparent;
-  border-radius: 16px;
-  box-shadow: var(--shadow);
-  padding: 18px 20px;
-}
-
-/* --- Шапка карточки --- */
-.header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  padding-bottom: 10px;
-  border-bottom: 1px solid var(--border);
-}
-
-.title {
-  margin: 0;
-  font-weight: 900;
-  letter-spacing: 0.2px;
-}
-
-/* --- Вторичный текст --- */
-.muted { color: var(--muted); }
+/* Стили формы поиска, таблицы, статусов и таблицы/грида */
 
 /* --- Форма поиска --- */
 .form {
@@ -97,13 +13,17 @@ html, body, #root {
   background: #0f1320;
   border: 1px solid var(--border);
   border-radius: 12px;
-  padding: 12px 14px; /* немного крупнее */
+  padding: 12px 14px;
   font-size: 16px;
   color: var(--fg);
   outline: none;
-  transition: box-shadow .15s ease, border-color .15s ease;
+  transition: box-shadow 0.15s ease, border-color 0.15s ease;
 }
-.input::placeholder { color: #7d8696; }
+
+.input::placeholder {
+  color: #7d8696;
+}
+
 .input:focus {
   border-color: #395ea7;
   box-shadow: 0 0 0 3px rgba(57, 94, 167, 0.25);
@@ -117,37 +37,51 @@ html, body, #root {
   padding: 12px 16px;
   font-weight: 700;
   cursor: pointer;
-  transition: transform .06s ease, filter .15s ease;
+  transition: transform 0.06s ease, filter 0.15s ease;
 }
-.btn:hover { filter: brightness(1.05); }
-.btn:active { transform: translateY(1px); }
-.btn:disabled { opacity: .7; cursor: not-allowed; }
+
+.btn:hover {
+  filter: brightness(1.05);
+}
+
+.btn:active {
+  transform: translateY(1px);
+}
+
+.btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
 
 /* --- Статусы --- */
-.status { margin-top: 10px; }
+.status {
+  margin-top: 10px;
+}
+
 .error {
   margin-top: 12px;
   color: var(--danger);
   font-weight: 600;
 }
+
 .empty {
   margin-top: 12px;
   color: var(--muted);
 }
 
-/* --- Таблица результатов --- */
+/* --- Обёртка для таблицы/грида --- */
 .table-wrap {
   margin-top: 16px;
-  overflow: auto;                 /* горизонтальный скролл только внутри таблицы */
   border: 1px solid var(--border);
   border-radius: 12px;
+  overflow: hidden;
 }
 
-/* Чтобы таблица занимала всю ширину карточки */
+/* Обычная таблица (если вдруг потребуется) */
 table {
   width: 100%;
   border-collapse: collapse;
-  min-width: 760px;   /* можно поднять/опустить порог; не даём колонкам схлопнуться */
+  min-width: 760px;
 }
 
 thead th {
@@ -165,7 +99,7 @@ tbody td {
   vertical-align: top;
 }
 
-/* --- Ячейка с репозиторием --- */
+/* Ячейка с репозиторием */
 .repo {
   display: flex;
   align-items: center;
@@ -173,14 +107,102 @@ tbody td {
 }
 
 .avatar {
-  width: 28px; height: 28px;
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
   object-fit: cover;
   border: 1px solid var(--border);
 }
 
-/* --- Адаптив --- */
+/* AG Grid-тема нужно обернуть в .table-wrap */
+.ag-theme-material {
+  --ag-background-color: transparent;
+  --ag-header-background-color: #101425;
+  --ag-odd-row-background-color: #141729;
+  --ag-foreground-color: #e9edf1;
+  --ag-border-color: #262b3a;
+
+  width: 100%;
+}
+
+/* ========== КРАСИВЫЙ DatePicker ========== */
+
+.date-picker {
+  margin-top: 6px;
+}
+
+/* обёртка input-а */
+.date-picker .react-date-picker__wrapper {
+  background: #0f1320;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  padding: 6px 10px;
+  color: var(--fg);
+}
+
+/* сам input */
+.date-picker input {
+  background: transparent;
+  border: none;
+  color: var(--fg);
+  font-size: 15px;
+}
+
+/* иконка календаря и крестик */
+.date-picker .react-date-picker__clear-button,
+.date-picker .react-date-picker__calendar-button {
+  color: var(--muted);
+}
+
+/* попап календаря */
+.react-date-picker__calendar {
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.55);
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.react-calendar {
+  border: none;
+}
+
+/* шапка календаря */
+.react-calendar__navigation {
+  background: #101425;
+  color: var(--fg);
+}
+
+/* дни недели / ячейки */
+.react-calendar__month-view__weekdays {
+  background: #141729;
+}
+
+.react-calendar__tile {
+  padding: 8px 0;
+}
+
+/* выбранная дата */
+.react-calendar__tile--active {
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  color: #0b1020;
+}
+
+/* ховер по датам */
+.react-calendar__tile:enabled:hover {
+  background: rgba(110, 168, 254, 0.18);
+}
+
+/* ========== Адаптив ========== */
+
 @media (max-width: 520px) {
-  .title { font-size: 20px; }
-  .input { font-size: 15px; }
+  .app-header {
+    padding: 0 16px;
+  }
+
+  .title {
+    font-size: 20px;
+  }
+
+  .input {
+    font-size: 15px;
+  }
 }

@@ -1,68 +1,408 @@
+/* --- Палитра и базовые переменные --- */
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
+  --bg: #0f1117;
+  --fg: #e9edf1;
+  --muted: #a7b0be;
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  --card: #151826;
+  --border: #262b3a;
 
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  --accent: #6ea8fe;   /* синий */
+  --accent-2: #a78bfa; /* фиолетовый */
+  --accent-3: #64b5f6; /* голубой */
+
+  --danger: #ef5350;
+  --shadow: 0 16px 42px rgba(0, 0, 0, 0.35);
 }
 
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
+* {
+  box-sizing: border-box;
 }
 
-body {
+/* Фон на всей странице, без белого хвоста */
+html,
+body,
+#root {
+  height: 100%;
   margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
+  background: radial-gradient(
+    1200px 800px at 80% 0%,
+    #1a1f2e 0%,
+    var(--bg) 60%
+  );
+  background-attachment: fixed;
+  color: var(--fg);
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto,
+    "Helvetica Neue", Arial;
+}
+
+/* Корень Vite без ограничений ширины */
+#root {
+  max-width: none;
+  padding: 0;
+}
+
+/* ================== ОБЩИЙ ЛЕЙАУТ С НАВИГАЦИЕЙ ================== */
+
+.app-shell {
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+.app-header {
+  height: 56px;
+  padding: 0 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
+.app-logo {
+  font-weight: 800;
+  font-size: 18px;
+}
+
+.app-nav {
+  display: flex;
+  gap: 16px;
+}
+
+.app-nav-link {
+  color: var(--muted);
+  text-decoration: none;
   font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+  padding: 6px 10px;
+  border-radius: 999px;
+  transition: background 0.15s ease, color 0.15s ease;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
+.app-nav-link:hover {
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--fg);
+}
+
+.app-nav-link.active {
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  color: #0b1020;
+}
+
+.app-main {
+  flex: 1;
+  padding: 24px 18px 40px;
+}
+
+/* ================== СТРАНИЦЫ И КАРТОЧКА ================== */
+
+/* По умолчанию карточка по центру */
+.page {
+  min-height: calc(100vh - 56px - 40px); /* минус шапка и нижний отступ */
+  display: grid;
+  place-items: center;
+  padding: 6vh 24px;
+}
+
+/* Когда появились результаты/загрузка/ошибка — поднимаем карточку выше */
+.page.page-top {
+  align-content: flex-start;
+  padding-top: 4vh;
+}
+
+/* Карточка — ширина и оформление */
+.card {
+  width: 100%;
+  max-width: 1300px;
+  margin: 0 auto;
+  background:
+    linear-gradient(var(--card), var(--card)) padding-box,
+    linear-gradient(
+      135deg,
+      var(--accent),
+      var(--accent-2) 40%,
+      var(--accent-3)
+    )
+      border-box;
+  border: 1px solid transparent;
+  border-radius: 16px;
+  box-shadow: var(--shadow);
+  padding: 18px 20px;
+}
+
+/* Шапка карточки */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+}
+
+.title {
+  margin: 0;
+  font-weight: 900;
+  letter-spacing: 0.2px;
+}
+
+/* Вторичный текст */
+.muted {
+  color: var(--muted);
+}
+
+/* Немного базовых стилей для текста */
+p {
+  margin-top: 8px;
+  margin-bottom: 8px;
+}
+
+ul {
+  margin-top: 8px;
+  padding-left: 20px;
+}
+
+code {
+  font-family: "SF Mono", ui-monospace, Menlo, Monaco, Consolas, "Liberation Mono",
+    "Courier New", monospace;
+  font-size: 0.9em;
+}
+
+/* Оболочка инпута */
+.date-picker {
+  background: #0f1320;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  padding: 6px 10px;
+  color: var(--fg);
+}
+
+.date-picker .react-date-picker__wrapper {
+  border: none;
+}
+
+/* Общий фон выпадающего календаря */
+.react-calendar {
+  background: #0f1320;
+  color: var(--fg);
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+}
+
+/* ===== ВЕРХНЯЯ ПАНЕЛЬ (месяц + стрелки) ===== */
+.react-calendar__navigation {
+  background: #1d2540;           /* светлее, чтобы не сливалось */
+  border-bottom: 1px solid var(--border);
+}
+
+.react-calendar__navigation button {
+  color: #f5f7ff;                /* светлый текст */
+  font-weight: 600;
+}
+
+/* Подсветка при наведении на кнопки навигации */
+.react-calendar__navigation button:enabled:hover {
+  background: #2b375c;           /* цвет подсветки на hover */
+}
+
+/* ===== Плитки дней ===== */
+.react-calendar__tile {
+  padding: 8px 0;
+}
+
+.react-calendar__tile--now {
+  background: rgba(110, 168, 254, 0.51);
+}
+
+.react-calendar__tile--active {
+  background: var(--accent);
+  color: #0b1020;
+}
+
+.react-calendar__tile:enabled:hover:not(.react-calendar__tile--active) {
+  background: rgba(110, 168, 254, 0.25);
+}
+
+/* Цвет всех обычных дней текущего месяца */
+.react-calendar__month-view__days__day {
+  color: #f3f4f6 !important; /* белые цифры */
+}
+
+/* Предыдущий/следующий месяц (серые) */
+.react-calendar__month-view__days__day--neighboringMonth {
+  color: #7c8696 !important;
+}
+
+/* Выходные (красные) */
+.react-calendar__month-view__days__day--weekend {
+  color: #ef5350 !important;
+}
+
+/* ВЫБРАННЫЙ ДЕНЬ: чёрный текст на синем фоне */
+.react-calendar__tile--active,
+.react-calendar__tile--active:enabled:hover,
+.react-calendar__tile--active:enabled:focus {
+  background: var(--accent);
+  color: #0b1020 !important; /* почти чёрный текст */
+}
+
+/* ================== AG GRID — DARK THEME ================== */
+
+.ag-theme-material.dark-grid,
+.ag-theme-material.dark-grid .ag-root-wrapper,
+.ag-theme-material.dark-grid .ag-root-wrapper-body,
+.ag-theme-material.dark-grid .ag-center-cols-clipper,
+.ag-theme-material.dark-grid .ag-center-cols-viewport,
+.ag-theme-material.dark-grid .ag-center-cols-container {
+  background-color: #0f1320 !important;   /* тёмный фон как у сайта */
+  color: #e9edf1 !important;
+  border: none;
+}
+
+/* Общий вид грида */
+.ag-theme-material.dark-grid {
+  border: 1px solid #262b3a !important;
+  border-radius: 12px;
+  box-shadow: 0 16px 42px rgba(0, 0, 0, 0.35);
+  font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+  font-size: 14px;
+}
+
+/* Заголовки оставляем контрастнее */
+.ag-theme-material.dark-grid .ag-header {
+  background-color: #1a1e2b !important;
+  border-bottom: 1px solid #262b3a !important;
+}
+
+.ag-theme-material.dark-grid .ag-header-cell-label {
+  color: #e9edf1 !important;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+}
+
+/* Ячейки */
+.ag-theme-material.dark-grid .ag-cell {
+  background-color: #151a28 !important;
+  color: #e9edf1 !important;
+  border-color: #262b3a !important;
+}
+
+/* Все строки одного цвета */
+.ag-theme-material.dark-grid .ag-row {
+  background-color: #151a28 !important; /* общий фон строк */
+  border-color: #262b3a !important;
+}
+
+/* Убираем "зебру" (чередование) */
+.ag-theme-material.dark-grid .ag-row:nth-child(2n) {
+  background-color: #151a28 !important;
+}
+
+/* Отключаем подсветку при наведении */
+.ag-theme-material.dark-grid .ag-row-hover {
+  background-color: #151a28 !important;
+}
+
+/* Пагинация внизу */
+.ag-theme-material.dark-grid .ag-paging-panel {
+  background-color: #101425 !important;
+  border-top: 1px solid #262b3a !important;
+  color: #a7b0be !important;
+}
+
+/* Кнопки пагинации */
+.ag-theme-material.dark-grid .ag-paging-button {
+  color: #a7b0be !important;
+  transition: color 0.15s ease;
+}
+
+.ag-theme-material.dark-grid .ag-paging-button:hover {
+  color: #6ea8fe !important;
+}
+
+/* Ссылки в колонке Link */
+.ag-theme-material.dark-grid a {
+  color: #6ea8fe !important;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.ag-theme-material.dark-grid a:hover {
+  text-decoration: underline;
+}
+
+/* Индикатор сортировки (стрелочки в шапке) */
+.ag-theme-material.dark-grid .ag-header-cell-sorted-asc .ag-header-cell-label::after {
+  content: "▲";
+  font-size: 11px;
+  margin-left: 4px;
+  color: #6ea8fe;
+}
+
+.ag-theme-material.dark-grid .ag-header-cell-sorted-desc .ag-header-cell-label::after {
+  content: "▼";
+  font-size: 11px;
+  margin-left: 4px;
+  color: #6ea8fe;
+}
+
+/* ========== DARK THEME ДЛЯ ОКОН ФИЛЬТРА ========== */
+
+/* Сам попап фильтра / меню */
+.ag-theme-material.dark-grid .ag-menu,
+.ag-theme-material.dark-grid .ag-menu-list,
+.ag-theme-material.dark-grid .ag-filter-wrapper,
+.ag-theme-material.dark-grid .ag-filter-body-wrapper {
+  background: #050814;
+  color: #e9edf1;
+  border-radius: 12px;
+  border: 1px solid #262b3a;
+  box-shadow: 0 16px 42px rgba(0, 0, 0, 0.45);
+}
+
+/* Опции меню, заголовки внутри попапа */
+.ag-theme-material.dark-grid .ag-menu .ag-menu-option,
+.ag-theme-material.dark-grid .ag-menu .ag-menu-header {
+  background: transparent;
+  color: #e9edf1;
+}
+
+/* Выпадающие списки (Contains / Equals и т.п.) */
+.ag-theme-material.dark-grid .ag-filter-select,
+.ag-theme-material.dark-grid .ag-filter-select .ag-picker-field-display {
+  background: #0f1320;
+  color: #e9edf1;
+  border-radius: 8px;
+  border: 1px solid #262b3a;
+  padding: 4px 8px;
+}
+
+/* Текстовое поле "Filter..." */
+.ag-theme-material.dark-grid .ag-filter-body-wrapper input[type="text"],
+.ag-theme-material.dark-grid .ag-filter-body-wrapper .ag-input-field-input {
+  background: #0f1320;
+  color: #e9edf1;
+  border-radius: 8px;
+  border: 1px solid #262b3a;
+  padding: 6px 8px;
+}
+
+/* Плейсхолдер "Filter..." */
+.ag-theme-material.dark-grid .ag-filter-body-wrapper input::placeholder {
+  color: #a7b0be;
+}
+
+/* Фокус для инпута и селекта */
+.ag-theme-material.dark-grid .ag-filter-body-wrapper input[type="text"]:focus,
+.ag-theme-material.dark-grid .ag-filter-body-wrapper .ag-input-field-input:focus,
+.ag-theme-material.dark-grid .ag-filter-select select:focus {
+  outline: none;
+  border-color: #6ea8fe;
+  box-shadow: 0 0 0 2px rgba(110, 168, 254, 0.35);
+}
+
+/* AND / OR, подписи и т.п. */
+.ag-theme-material.dark-grid .ag-filter-condition .ag-input-field-label,
+.ag-theme-material.dark-grid .ag-filter-condition-label {
+  color: #e9edf1;
 }
