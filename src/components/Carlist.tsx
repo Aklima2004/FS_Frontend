@@ -1,3 +1,4 @@
+// src/components/Carlist.tsx
 import { useState } from 'react';
 import {
   useQuery,
@@ -18,27 +19,26 @@ import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import DeleteIcon from '@mui/icons-material/Delete';
+import Stack from '@mui/material/Stack';
 
 import { getCars, deleteCar } from '../api/carapi';
 import { CarResponse } from '../types';
 import AddCar from './AddCar';
 import EditCar from './EditCar';
 
-function Carlist() {
+type CarlistProps = {
+  logOut?: () => void;
+};
+
+function Carlist({ logOut }: CarlistProps) {
   const [open, setOpen] = useState(false);
   const queryClient = useQueryClient();
 
-  // --- FETCH CARS ---
-  const {
-    data,
-    error,
-    isSuccess,
-  } = useQuery<CarResponse[], Error>({
+  const { data, error, isSuccess } = useQuery<CarResponse[], Error>({
     queryKey: ['cars'],
     queryFn: getCars,
   });
 
-  // --- DELETE CAR ---
   const { mutate } = useMutation({
     mutationFn: deleteCar,
     onSuccess: () => {
@@ -50,11 +50,8 @@ function Carlist() {
     },
   });
 
-  // --- EXPORT TO CSV ---
   const handleExportCsv = () => {
-    if (!data || data.length === 0) {
-      return;
-    }
+    if (!data || data.length === 0) return;
 
     const headers = [
       'Brand',
@@ -92,16 +89,11 @@ function Carlist() {
     URL.revokeObjectURL(url);
   };
 
-  // --- COLUMNS (чуть уже, чтобы влезало без горизонтального скролла) ---
   const columns: GridColDef[] = [
     { field: 'brand', headerName: 'Brand', width: 160 },
     { field: 'model', headerName: 'Model', width: 160 },
     { field: 'color', headerName: 'Color', width: 130 },
-    {
-      field: 'registrationNumber',
-      headerName: 'Reg.nr.',
-      width: 150,
-    },
+    { field: 'registrationNumber', headerName: 'Reg.nr.', width: 150 },
     { field: 'modelYear', headerName: 'Model Year', width: 120 },
     { field: 'price', headerName: 'Price', width: 120 },
 
@@ -132,7 +124,7 @@ function Carlist() {
             onClick={() => {
               if (
                 window.confirm(
-                  `Are you sure you want to delete ${params.row.brand} ${params.row.model}?`,
+                  `Are you sure you want to delete ${params.row.brand} ${params.row.model}?`
                 )
               ) {
                 mutate((params.row as CarResponse)._links.car.href);
@@ -146,54 +138,39 @@ function Carlist() {
     },
   ];
 
-  if (!isSuccess) {
-    return <span>Loading...</span>;
-  }
+  if (!isSuccess) return <span>Loading...</span>;
+  if (error) return <span>Error when fetching cars...</span>;
 
-  if (error) {
-    return <span>Error when fetching cars...</span>;
-  }
-
-  // --- RENDER ---
   return (
     <Box sx={{ mt: 2 }}>
-      {/* Заголовок + действия в одной строке, ближе к верху */}
-      <Box
-        sx={{
-          mb: 2,
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'flex-end',
-        }}
+      <Stack
+        direction="row"
+        alignItems="center"
+        justifyContent="space-between"
+        sx={{ mb: 2 }}
       >
-        <Box>
-          <Typography variant="h5" sx={{ fontWeight: 700, mb: 0.5 }}>
-            Inventory
-          </Typography>
-          <Typography
-            variant="body2"
-            sx={{ color: 'text.secondary', fontSize: 13 }}
-          >
-            Manage cars in your shop: add, edit, delete and export to CSV.
-          </Typography>
-        </Box>
+        <AddCar />
 
-        <Box sx={{ display: 'flex', gap: 1 }}>
-          <AddCar />
+        <Stack direction="row" spacing={1}>
           <Button
             variant="outlined"
-            sx={{
-              textTransform: 'none',
-              borderRadius: '999px',
-            }}
+            sx={{ textTransform: 'none', borderRadius: '999px' }}
             onClick={handleExportCsv}
           >
             Export CSV
           </Button>
-        </Box>
-      </Box>
 
-      {/* Карточка с таблицей — шире и ближе к заголовку */}
+          <Button
+            variant="contained"
+            color="error"
+            onClick={logOut}
+            sx={{ textTransform: 'none', borderRadius: '999px' }}
+          >
+            Log out
+          </Button>
+        </Stack>
+      </Stack>
+
       <Box
         sx={{
           width: '100%',
@@ -216,15 +193,7 @@ function Carlist() {
               bgcolor: 'rgba(15,23,42,0.95)',
               borderBottom: '1px solid rgba(148,163,184,0.5)',
             },
-            '& .MuiDataGrid-cell': {
-              borderBottom: '1px solid rgba(30,41,59,0.9)',
-            },
-            '& .MuiDataGrid-row:nth-of-type(odd)': {
-              bgcolor: 'rgba(15,23,42,0.9)',
-            },
-            '& .MuiDataGrid-row:nth-of-type(even)': {
-              bgcolor: 'rgba(15,23,42,0.85)',
-            },
+            '& .MuiDataGrid-row': {},
           }}
         />
       </Box>

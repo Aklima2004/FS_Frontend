@@ -8,7 +8,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 
-import Carlist from './components/Carlist';
+import Login from './components/Login';
 
 const queryClient = new QueryClient();
 
@@ -75,7 +75,7 @@ function App() {
         {/* Контент ближе к верхнему бару */}
         <Container maxWidth="xl" sx={{ py: 3 }}>
           <QueryClientProvider client={queryClient}>
-            <Carlist />
+            <Login />
           </QueryClientProvider>
         </Container>
       </Box>
